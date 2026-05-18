@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asiento de Sueldos — Tabacos del Valle</title>
+<style>
+  :root {
+    --bg:#f8f7f4; --sur:#fff; --sur2:#f1f0ec; --bdr:#e2e0d8;
+    --acc:#2563eb; --grn:#059669; --red:#dc2626; --gld:#d97706;
+    --txt:#1a1a1a; --mut:#6b7280;
+    --mono:'Courier New',monospace; --sans:'Segoe UI',system-ui,sans-serif;
+    --r:8px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--txt);font-family:var(--sans);min-height:100vh}
+  header{background:var(--sur);border-bottom:1px solid var(--bdr);padding:16px 36px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+  .logo{width:38px;height:38px;background:var(--acc);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:#fff;flex-shrink:0}
+  header h1{font-size:17px;font-weight:700}
+  header p{font-size:12px;color:var(--mut);margin-top:1px}
+  .wrap{max-width:1160px;margin:0 auto;padding:24px 20px}
+  .steps{display:flex;background:var(--sur);border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden;margin-bottom:20px}
+  .stp{flex:1;display:flex;align-items:center;gap:8px;padding:11px 16px;cursor:pointer;border-right:1px solid var(--bdr);font-size:13px;color:var(--mut);transition:background .15s}
+  .stp:last-child{border-right:none}
+  .stp.on{background:var(--acc);color:#fff}
+  .sn{width:21px;height:21px;border-radius:50%;background:rgba(0,0,0,.1);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+  .stp.on .sn{background:rgba(255,255,255,.25)}
+  .pnl{display:none}.pnl.on{display:block}
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+  .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:18px}
+  .uc{background:var(--sur);border:2px dashed var(--bdr);border-radius:var(--r);padding:18px;text-align:center;position:relative;cursor:pointer;transition:all .2s}
+  .uc:hover{border-color:var(--acc);background:#eff6ff}
+  .uc.ok{border-color:var(--grn);border-style:solid;background:#f0fdf4}
+  .uc input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+  .ui{font-size:24px;margin-bottom:6px}
+  .ul{font-size:13px;font-weight:600;margin-bottom:2px}
+  .us{font-size:11px;color:var(--mut)}
+  .un{font-size:11px;color:var(--grn);margin-top:4px;font-family:var(--mono);font-weight:600}
+  .fld label{display:block;font-size:11px;font-weight:700;color:var(--mut);margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px}
+  .fld input{width:100%;background:var(--sur);border:1.5px solid var(--bdr);border-radius:var(--r);padding:9px 11px;color:var(--txt);font-size:14px;outline:none;transition:border-color .15s}
+  .fld input:focus{border-color:var(--acc)}
+  .btn{padding:10px 20px;border-radius:var(--r);font-size:13px;font-weight:700;border:none;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:6px}
+  .bp{background:var(--acc);color:#fff}.bp:hover{background:#1d4ed8}.bp:disabled{opacity:.4;cursor:not-allowed}
+  .bs{background:var(--sur2);color:var(--txt);border:1.5px solid var(--bdr)}.bs:hover{border-color:var(--acc)}
+  .bg{background:var(--grn);color:#fff}.bg:hover{background:#047857}
+  .al{border-radius:var(--r);padding:10px 14px;font-size:13px;margin-bottom:12px}
+  .ae{background:#fef2f2;border:1px solid #fca5a5;color:var(--red)}
+  .ai{background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8}
+  .prg{height:3px;background:var(--bdr);border-radius:2px;margin:8px 0;display:none}
+  .prb{height:100%;background:var(--acc);border-radius:2px;transition:width .4s}
+  .c4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+  .sc{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--r);padding:12px}
+  .sc .sl{font-size:10px;color:var(--mut);font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+  .sc .sv{font-size:15px;font-weight:700;font-family:var(--mono)}
+  .sv.blu{color:var(--acc)}.sv.grn{color:var(--grn)}.sv.ok{color:var(--grn)}.sv.er{color:var(--red)}
+  .sec{font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.7px;margin:18px 0 9px;display:flex;align-items:center;gap:8px}
+  .sec::after{content:'';flex:1;height:1px;background:var(--bdr)}
+  .tw{overflow-x:auto;border-radius:var(--r);border:1px solid var(--bdr);margin-bottom:16px}
+  table{width:100%;border-collapse:collapse;font-size:12px}
+  thead{background:var(--sur2)}
+  th{padding:8px 12px;text-align:left;font-size:10px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);white-space:nowrap}
+  td{padding:7px 12px;border-bottom:1px solid #f0ede8;font-family:var(--mono);font-size:11px;vertical-align:middle}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:#fafaf8}
+  .ta{color:var(--acc);font-weight:700}
+  .td{font-family:var(--sans);font-size:12px}
+  .tde{color:var(--acc);font-weight:600}.th{color:var(--grn);font-weight:600}
+  .tt td{font-weight:700;background:var(--sur2)!important}
+  .bdg{display:inline-block;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700}
+  .bd{background:#dbeafe;color:#1e40af}.bh{background:#d1fae5;color:#065f46}
+  .dm{font-size:10px;color:var(--mut);font-family:var(--sans)}
+  .dg2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+  .dc{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--r);padding:18px}
+  .dc h3{font-size:14px;font-weight:700;margin-bottom:4px}
+  .dc p{font-size:12px;color:var(--mut);margin-bottom:12px}
+  .pv{background:var(--sur2);border-radius:6px;padding:9px;font-family:var(--mono);font-size:10px;color:var(--mut);margin-bottom:12px;white-space:pre;overflow:hidden;max-height:65px;border:1px solid var(--bdr)}
+  .ra{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+  .sp{display:inline-block;width:12px;height:12px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .6s linear infinite}
+  @keyframes sp{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">SJ</div>
+  <div><h1>Asiento de Sueldos</h1><p>Tabacos del Valle SA — Automatización mensual</p></div>
+</header>
+<div class="wrap">
+
+  <div class="steps">
+    <div class="stp on" id="s1" onclick="go(1)"><div class="sn">1</div>Cargar archivos</div>
+    <div class="stp" id="s2" onclick="go(2)"><div class="sn">2</div>Revisar asiento</div>
+    <div class="stp" id="s3" onclick="go(3)"><div class="sn">3</div>Exportar Bejerman</div>
+  </div>
+
+  <div class="pnl on" id="p1">
+    <div class="g2">
+      <div class="uc" id="cc-cecos"><input type="file" accept=".xlsx" onchange="lf('cecos',this)"><div class="ui">📊</div><div class="ul">Excel CeCos</div><div class="us">Hoja2 — tabla dinámica por CeCo</div><div class="un" id="nc"></div></div>
+      <div class="uc" id="cc-ant"><input type="file" accept=".xlsx" onchange="lf('ant',this)"><div class="ui">💰</div><div class="ul">Excel Anticipos</div><div class="us">Anticipos por empleado y CeCo</div><div class="un" id="na"></div></div>
+      <div class="uc" id="cc-tot"><input type="file" accept=".pdf" onchange="lf('tot',this)"><div class="ui">📄</div><div class="ul">PDF Totales Generales</div><div class="us">Planilla de totales del período</div><div class="un" id="nt"></div></div>
+      <div class="uc" id="cc-f931"><input type="file" accept=".pdf" onchange="lf('f931',this)"><div class="ui">📋</div><div class="ul">PDF F931 (opcional)</div><div class="us">Solo para referencia</div><div class="un" id="nf"></div></div>
+    </div>
+    <div class="g3">
+      <div class="fld"><label>Período (MM/AAAA)</label><input id="per" placeholder="04/2026"></div>
+      <div class="fld"><label>Nro. de Asiento</label><input id="nro" placeholder="004222"></div>
+      <div class="fld"><label>Fecha (AAAAMMDD)</label><input id="fec" placeholder="20260430"></div>
+    </div>
+    <div id="a1"></div>
+    <div class="prg" id="pg"><div class="prb" id="pb" style="width:0%"></div></div>
+    <button class="btn bp" id="btnp" onclick="proc()">Procesar y generar asiento →</button>
+  </div>
+
+  <div class="pnl" id="p2">
+    <div class="c4" id="sm"></div>
+    <div class="sec">Asiento contable</div>
+    <div class="tw"><table><thead><tr><th>Cuenta</th><th>Descripción</th><th>D/H</th><th style="text-align:right">Debe</th><th style="text-align:right">Haber</th><th>Conceptos</th></tr></thead><tbody id="ta"></tbody></table></div>
+    <div class="sec">Distribución por Centro de Costos</div>
+    <div class="tw"><table><thead><tr><th>Centro de Costos</th><th>Cód.</th><th style="text-align:right">Neto+Anticip.</th><th style="text-align:right">Part.%</th><th style="text-align:right">Sueldos y Jorn.</th><th style="text-align:right">Cargas Soc.</th><th style="text-align:right">Indemn.</th><th style="text-align:right">CS a Pagar</th></tr></thead><tbody id="tc"></tbody></table></div>
+    <div class="ra"><button class="btn bs" onclick="go(1)">← Volver</button><button class="btn bp" onclick="go(3)">Generar archivos Bejerman →</button></div>
+  </div>
+
+  <div class="pnl" id="p3">
+    <div class="dg2">
+      <div class="dc"><h3>📁 USUARIO1.IMP — Cabecera</h3><p>Registro de cabecera del asiento.</p><div class="pv" id="pv1"></div><button class="btn bg" onclick="dl('u1')">⬇ Descargar USUARIO1.IMP</button></div>
+      <div class="dc"><h3>📁 USUARIO2.IMP — Detalle</h3><p>Todos los pases con cuenta, D/H e importe.</p><div class="pv" id="pv2"></div><button class="btn bg" onclick="dl('u2')">⬇ Descargar USUARIO2.IMP</button></div>
+    </div>
+    <div class="sec">Vista previa — pases</div>
+    <div class="tw"><table><thead><tr><th>Nro</th><th>Cuenta</th><th>Fecha</th><th>Leyenda</th><th>D/H</th><th style="text-align:right">Importe</th></tr></thead><tbody id="tp"></tbody></table></div>
+    <div class="ra"><button class="btn bs" onclick="go(2)">← Volver al asiento</button></div>
+  </div>
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+const ACC={
+  sueldos:  {c:'4.2.1/02/01',d:'Sueldos y Jornales'},
+  cargasSoc:{c:'4.2.1/02/02',d:'Cargas Sociales'},
+  indemn:   {c:'4.2.1/06/08',d:'Indemnizaciones Laborales'},
+  sicore:   {c:'2.1.3/01/03',d:'ARCA - SICORE a Pagar'},
+  sueldPag: {c:'2.1.4/01/01',d:'Sueldos a Pagar'},
+  embargos: {c:'2.1.4/01/02',d:'Embargos de Sueldos a Pagar'},
+  sot:      {c:'2.1.4/01/03',d:'Retención SOT a Pagar'},
+  stait:    {c:'2.1.4/01/04',d:'Retención STAIT a Pagar'},
+  apSS:     {c:'2.1.4/01/05',d:'Aportes Seg. Soc. a Pagar'},
+  contSS:   {c:'2.1.4/01/06',d:'Contrib. a la Seg. Soc. a Pagar'},
+  apOS:     {c:'2.1.4/01/07',d:'Aportes Obra Social a Pagar'},
+  contOS:   {c:'2.1.4/01/08',d:'Contrib. Obra Social a Pagar'},
+  art:      {c:'2.1.4/01/09',d:'ART a Pagar'},
+  scvo:     {c:'2.1.4/01/10',d:'SCVO a Pagar'},
+  sancor:   {c:'2.1.4/01/11',d:'Retención SANCOR a Pagar'},
+};
+const BEJ={
+  'Acopio':'01','Prod. Despalillado':'02','Prod. Picado':'03',
+  'Control de Calidad':'12','Administración y Ctrl de gest.':'05',
+  'Logística':'09','RRHH':'06','Marketing':'11','Mantenimiento':'10',
+};
+const S={f:{},data:null,u1:'',u2:''};
+function go(n){[1,2,3].forEach(i=>{document.getElementById('p'+i).classList.toggle('on',i===n);document.getElementById('s'+i).classList.toggle('on',i===n);})}
+function lf(k,inp){const f=inp.files[0];if(!f)return;S.f[k]=f;const ids={cecos:'cc-cecos',ant:'cc-ant',tot:'cc-tot',f931:'cc-f931'};const ns={cecos:'nc',ant:'na',tot:'nt',f931:'nf'};document.getElementById(ids[k]).classList.add('ok');document.getElementById(ns[k]).textContent='✓ '+f.name;}
+function fmt(n){return new Intl.NumberFormat('es-AR',{minimumFractionDigits:2,maximumFractionDigits:2}).format(n||0);}
+function pct(n){return ((n||0)*100).toFixed(4)+'%';}
+function fmtA(n){const c=Math.round(Math.abs(n||0)*100);return String(Math.floor(c/100)).padStart(12,'0')+'.'+String(c%100).padStart(2,'0');}
+function pR(s,n){return String(s||'').substring(0,n).padEnd(n,' ');}
+function sp(p){document.getElementById('pg').style.display='block';document.getElementById('pb').style.width=p+'%';}
+function rAB(f){return new Promise((r,j)=>{const fr=new FileReader();fr.onload=e=>r(e.target.result);fr.onerror=j;fr.readAsArrayBuffer(f);});}
+function ab64(ab){const b=new Uint8Array(ab);let s='';for(let i=0;i<b.length;i++)s+=String.fromCharCode(b[i]);return btoa(s);}
+
+function parseCecos(wb){
+  const sn=wb.SheetNames.find(n=>/hoja2/i.test(n))||wb.SheetNames[1]||wb.SheetNames[0];
+  const rows=XLSX.utils.sheet_to_json(wb.Sheets[sn],{header:1,defval:''});
+  let hi=-1;
+  for(let i=0;i<rows.length;i++){const r=rows[i].map(c=>String(c).toLowerCase());if(r.some(c=>c.includes('centro'))&&r.some(c=>c.includes('remunerat'))){hi=i;break;}}
+  if(hi<0)hi=0;
+  const h=rows[hi].map(c=>String(c).toLowerCase().trim());
+  const iCC=h.findIndex(c=>c.includes('centros')||c.includes('centro'));
+  const iR=h.findIndex(c=>c.includes('remunerat')&&!c.includes('no '));
+  const iNR=h.findIndex(c=>c.includes('no remunerat'));
+  const iRt=h.findIndex(c=>c.includes('retenc'));
+  const iN=h.findIndex(c=>c.includes('neto'));
+  const out={};
+  for(let i=hi+1;i<rows.length;i++){
+    const row=rows[i];const cc=String(row[iCC]||'').trim();
+    if(!cc||/total|suma/i.test(cc))continue;
+    const rm=parseFloat(row[iR])||0,nr=parseFloat(row[iNR])||0,rt=parseFloat(row[iRt])||0,nt=parseFloat(row[iN])||0;
+    if(rm===0&&nt===0)continue;
+    out[cc]={rm,nr,rt,nt};
+  }
+  return out;
+}
+function parseAnts(wb){
+  const rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1,defval:''});
+  let hi=-1;
+  for(let i=0;i<rows.length;i++){const r=rows[i].map(c=>String(c).toLowerCase());if(r.some(c=>c.includes('centro'))&&r.some(c=>c.includes('importe'))){hi=i;break;}}
+  if(hi<0)return{};
+  const h=rows[hi].map(c=>String(c).toLowerCase().trim());
+  const iC=h.findIndex(c=>c.includes('centro')),iI=h.findIndex(c=>c.includes('importe'));
+  const out={};
+  for(let i=hi+1;i<rows.length;i++){const cc=String(rows[i][iC]||'').trim(),v=parseFloat(rows[i][iI])||0;if(!cc||v===0)continue;out[cc]=(out[cc]||0)+v;}
+  return out;
+}
+
+async function proc(){
+  const al=document.getElementById('a1');al.innerHTML='';
+  if(!S.f.cecos||!S.f.tot){al.innerHTML='<div class="al ae">⚠ Necesitás cargar el Excel CeCos y el PDF Totales Generales.</div>';return;}
+  const per=document.getElementById('per').value.trim()||'??/????';
+  const nro=(document.getElementById('nro').value.trim()||'000001').padStart(6,'0');
+  const fec=document.getElementById('fec').value.trim()||'';
+  const btn=document.getElementById('btnp');
+  btn.disabled=true;btn.innerHTML='<span class="sp"></span> Procesando...';
+  al.innerHTML='<div class="al ai">⏳ Leyendo Excel y procesando PDF con IA...</div>';
+  sp(5);
+  try{
+    const cecos=parseCecos(XLSX.read(await rAB(S.f.cecos),{type:'array'}));
+    if(!Object.keys(cecos).length)throw new Error('No se encontró tabla CeCos en la Hoja2.');
+    let ants={};
+    if(S.f.ant)ants=parseAnts(XLSX.read(await rAB(S.f.ant),{type:'array'}));
+    sp(25);
+    const b64=ab64(await rAB(S.f.tot));
+    sp(45);
+    const resp=await fetch('/api/parse-pdf',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pdf:b64})});
+    sp(72);
+    if(!resp.ok){const e=await resp.json();throw new Error(e.error||'Error procesando PDF');}
+    const T=await resp.json();
+    const C=T.conceptos||{};
+    const habR=T.totalHabRemun||0,cpat=T.totalContribPatr||0,tpag=T.totalAPagar||0;
+    const acS=(C['1030']||0)+(C['2710']||0),d144=(C['1880']||0)+(C['2880']||0);
+    const sYJ=habR+acS+d144,cs=cpat;
+    const a241=(C['1831']||0)+(C['2831']||0),vng=(C['1410']||0)+(C['2863']||0),sVc=(C['1412']||0)+(C['2865']||0);
+    const ind=a241+vng+sVc,tD=sYJ+cs+ind;
+    const sic=(C['G993']||0)+Math.abs(C['6982']||0),av=C['4801']||0,sp2=tpag+av;
+    const emb=C['4220']||0,san=C['4804']||0,sot=(C['4210']||0)+(C['4211']||0);
+    const ass=(C['4010']||0)+(C['4020']||0)+(C['4150']||0);
+    const css=(C['5010']||0)+(C['5020']||0)+(C['5030']||0)+(C['5040']||0)+(C['5150']||0);
+    const aos=C['4050']||0,cos=C['5050']||0,art=(C['5250']||0)+(C['5400']||0),scv=C['5180']||0,sta=C['4212']||0;
+    const tH=sic+sp2+emb+san+sot+ass+css+aos+cos+art+scv+sta;
+    let tNA=0;const ccD={};
+    for(const cc of Object.keys(cecos)){const a=ants[cc]||0,na=cecos[cc].nt+a;ccD[cc]={...cecos[cc],a,na};tNA+=na;}
+    const csP=ass+css+aos+cos+art+scv;
+    for(const cc of Object.keys(ccD)){const p=tNA>0?ccD[cc].na/tNA:0;ccD[cc].p=p;ccD[cc].sYJ=sYJ*p;ccD[cc].cs=cs*p;ccD[cc].ind=ind*p;ccD[cc].csP=csP*p;}
+    sp(92);
+    S.data={per,nro,fec,sYJ,cs,ind,tD,sic,sp:sp2,emb,san,sot,ass,css,aos,cos,art,scv,sta,tH,ccD,tNA,acS,d144,a241,vng,sVc,av,habR,cpat,tpag,C};
+    renderA();genIMP();
+    sp(100);setTimeout(()=>{document.getElementById('pg').style.display='none';},500);
+    al.innerHTML='';go(2);
+  }catch(e){al.innerHTML=`<div class="al ae">⚠ ${e.message}</div>`;console.error(e);}
+  finally{btn.disabled=false;btn.innerHTML='Procesar y generar asiento →';}
+}
+
+function renderA(){
+  const d=S.data,df=Math.abs(d.tD-d.tH);
+  document.getElementById('sm').innerHTML=`
+    <div class="sc"><div class="sl">Total Debe</div><div class="sv blu">$ ${fmt(d.tD)}</div></div>
+    <div class="sc"><div class="sl">Total Haber</div><div class="sv grn">$ ${fmt(d.tH)}</div></div>
+    <div class="sc"><div class="sl">Diferencia</div><div class="sv ${df<1?'ok':'er'}">$ ${fmt(df)}</div></div>
+    <div class="sc"><div class="sl">Centros de costo</div><div class="sv">${Object.keys(d.ccD).length}</div></div>`;
+  const rows=[
+    {a:ACC.sueldos,  dh:'D',v:d.sYJ,t:`Hab.Remunerativos + Acuerdo SOT (${fmt(d.acS)}) + Decreto 144 (${fmt(d.d144)})`},
+    {a:ACC.cargasSoc,dh:'D',v:d.cs, t:'Total contribuciones patronales'},
+    {a:ACC.indemn,   dh:'D',v:d.ind,t:`Art.241 (${fmt(d.a241)}) + Vac.No Goz. (${fmt(d.vng)}) + SAC Vac. (${fmt(d.sVc)})`},
+    {a:ACC.sicore,   dh:'H',v:d.sic,t:'G993 + 6982 (ajuste ganancias si aplica)'},
+    {a:ACC.sueldPag, dh:'H',v:d.sp, t:`Total a pagar (${fmt(d.tpag)}) + Anticipo vac. (${fmt(d.av)})`},
+    {a:ACC.embargos, dh:'H',v:d.emb,t:'4220 Embargo'},
+    {a:ACC.sot,      dh:'H',v:d.sot,t:'4210 Cuota Sindical SOT + 4211 Aporte Solidario'},
+    {a:ACC.apSS,     dh:'H',v:d.ass,t:'4010 Jubilación + 4020 Ley 19032 + 4150 ANSSAL'},
+    {a:ACC.contSS,   dh:'H',v:d.css,t:'5010+5020+5030+5040+5150'},
+    {a:ACC.apOS,     dh:'H',v:d.aos,t:'4050 Obra social'},
+    {a:ACC.contOS,   dh:'H',v:d.cos,t:'5050 Contribución obra social'},
+    {a:ACC.art,      dh:'H',v:d.art,t:'5250 + 5400 ART'},
+    {a:ACC.scvo,     dh:'H',v:d.scv,t:'5180 SCVO'},
+    {a:ACC.stait,    dh:'H',v:d.sta,t:'4212 STAIT'},
+    {a:ACC.sancor,   dh:'H',v:d.san,t:'4804 SANCOR'},
+  ].filter(r=>r.v>0);
+  let h='';
+  for(const r of rows){
+    const de=r.dh==='D'?`<span class="tde">$ ${fmt(r.v)}</span>`:'';
+    const ha=r.dh==='H'?`<span class="th">$ ${fmt(r.v)}</span>`:'';
+    h+=`<tr><td class="ta">${r.a.c}</td><td class="td">${r.a.d}</td><td><span class="bdg b${r.dh==='D'?'d':'h'}">${r.dh}</span></td><td style="text-align:right">${de}</td><td style="text-align:right">${ha}</td><td class="dm">${r.t}</td></tr>`;
+  }
+  h+=`<tr class="tt"><td colspan="3" class="td" style="text-align:right">Totales</td><td style="text-align:right"><span class="tde">$ ${fmt(d.tD)}</span></td><td style="text-align:right"><span class="th">$ ${fmt(d.tH)}</span></td><td class="dm" style="color:${df<1?'var(--grn)':'var(--red)'}">${df<1?'✓ Cuadrado':'⚠ Dif: $'+fmt(df)}</td></tr>`;
+  document.getElementById('ta').innerHTML=h;
+  let hc='';
+  for(const [cc,v] of Object.entries(d.ccD).sort((a,b)=>b[1].p-a[1].p))
+    hc+=`<tr><td style="color:var(--gld);font-size:11px">${cc}</td><td style="font-weight:700;font-size:10px">${BEJ[cc]||'??'}</td><td style="text-align:right">${fmt(v.na)}</td><td style="text-align:right">${pct(v.p)}</td><td style="text-align:right;color:var(--acc)">${fmt(v.sYJ)}</td><td style="text-align:right;color:var(--acc)">${fmt(v.cs)}</td><td style="text-align:right;color:var(--acc)">${fmt(v.ind)}</td><td style="text-align:right;color:var(--acc)">${fmt(v.csP)}</td></tr>`;
+  document.getElementById('tc').innerHTML=hc;
+}
+
+function genIMP(){
+  const d=S.data;
+  const [mm,yy]=d.per.includes('/')?d.per.split('/'):[' ','    '];
+  S.u1=d.nro+d.fec+pR(`Devengamiento Sueldos ${mm}-${yy}`,30)+'R001   \r\n';
+  const Z='000000000000.00';
+  const ln=(ac,dh,v,l)=>d.nro+pR(ac,15)+d.fec+pR(l,30)+dh+fmtA(v)+Z+fmtA(v)+'        ';
+  const ps=[
+    {a:ACC.sueldos,  dh:'D',v:d.sYJ,l:'Sueldos y Jornales'},
+    {a:ACC.cargasSoc,dh:'D',v:d.cs, l:'Cargas Sociales'},
+    {a:ACC.indemn,   dh:'D',v:d.ind,l:'Indemnizaciones Laborales'},
+    {a:ACC.sicore,   dh:'H',v:d.sic,l:'ARCA SICORE a Pagar'},
+    {a:ACC.sueldPag, dh:'H',v:d.sp, l:'Sueldos a Pagar'},
+    {a:ACC.embargos, dh:'H',v:d.emb,l:'Embargos de Sueldos'},
+    {a:ACC.sot,      dh:'H',v:d.sot,l:'Retencion SOT'},
+    {a:ACC.apSS,     dh:'H',v:d.ass,l:'Aportes Seg. Soc.'},
+    {a:ACC.contSS,   dh:'H',v:d.css,l:'Contrib. Seg. Soc.'},
+    {a:ACC.apOS,     dh:'H',v:d.aos,l:'Aportes Obra Social'},
+    {a:ACC.contOS,   dh:'H',v:d.cos,l:'Contrib. Obra Social'},
+    {a:ACC.art,      dh:'H',v:d.art,l:'ART a Pagar'},
+    {a:ACC.scvo,     dh:'H',v:d.scv,l:'SCVO a Pagar'},
+    {a:ACC.stait,    dh:'H',v:d.sta,l:'Retencion STAIT'},
+    {a:ACC.sancor,   dh:'H',v:d.san,l:'Retencion SANCOR'},
+  ].filter(r=>r.v>0);
+  S.u2=ps.map(r=>ln(r.a.c,r.dh,r.v,r.l)).join('\r\n')+'\r\n';
+  document.getElementById('pv1').textContent=S.u1;
+  document.getElementById('pv2').textContent=S.u2.substring(0,400);
+  let h='';
+  for(const r of ps){
+    const dh=r.dh==='D'?'<span class="bdg bd">D</span>':'<span class="bdg bh">H</span>';
+    h+=`<tr><td>${d.nro}</td><td class="ta">${r.a.c}</td><td>${d.fec}</td><td class="td">${r.l}</td><td>${dh}</td><td style="text-align:right">${fmt(r.v)}</td></tr>`;
+  }
+  document.getElementById('tp').innerHTML=h;
+}
+
+function dl(w){
+  const c=w==='u1'?S.u1:S.u2,n=w==='u1'?'USUARIO1.IMP':'USUARIO2.IMP';
+  const b=new Blob([c],{type:'text/plain;charset=windows-1252'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=n;a.click();
+}
+</script>
+</body>
+</html>
